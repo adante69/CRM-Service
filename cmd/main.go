@@ -1,8 +1,8 @@
 package main
 
 import (
-	"CRMproject/config"
-	"CRMproject/server"
+	"CRM-Service/config"
+	"CRM-Service/server"
 	"fmt"
 	"go.uber.org/fx"
 	"net/http"

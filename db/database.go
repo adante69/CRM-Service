@@ -1,7 +1,7 @@
 package db
 
 import (
-	config2 "CRMproject/config"
+	config2 "CRM-Service/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

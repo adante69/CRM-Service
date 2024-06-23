@@ -1,4 +1,4 @@
-module CRMproject
+module CRM-Service
 
 go 1.22.4
 
