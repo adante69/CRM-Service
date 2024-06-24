@@ -1,10 +1,17 @@
-version: "3.10"
+version: '3.10'
+
 services:
-  db_auth:
-    container_name: db_auth
+  app:
+    build: .
+
+  db:
+    container_name: postgres
+    image: postgres:16-alpine
+    restart: always
+
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USERNAME: local
+      POSTGRES_DB: database
     ports:
       - "5432"
-    environment:
-      - POSTGRES_PASSWORD=gorm
-      - POSTGRES_USER=gorm
-    image: postgres:12.19-alpine
