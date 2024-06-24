@@ -1,17 +1,16 @@
-version: '3.10'
+version: '3.9'
 
 services:
   app:
-    build: .
-
+    build: ./cmd
   db:
     container_name: postgres
     image: postgres:16-alpine
     restart: always
 
     environment:
-      POSTGRES_PASSWORD: root
-      POSTGRES_USERNAME: local
-      POSTGRES_DB: database
+      POSTGRES_PASSWORD: gorm
+      POSTGRES_USERNAME: gorm
+      POSTGRES_DB: dbname
     ports:
       - "5432"

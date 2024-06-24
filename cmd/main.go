@@ -2,25 +2,34 @@ package main
 
 import (
 	"CRM-Service/config"
+	"CRM-Service/db"
 	"CRM-Service/server"
-	"fmt"
+	"github.com/pressly/goose/v3"
 	"go.uber.org/fx"
+	"gorm.io/gorm"
+	"log"
 	"net/http"
 )
 
 func main() {
-	configer, err := config.LoadConfiguration()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("Environment:", configer.Env)
-	fmt.Println("Server Host:", configer.Server.Host)
-	fmt.Println("Server Port:", configer.Server.Port)
-	fmt.Println("Database DSN:", configer.Database.Dsn)
-	fmt.Println()
 	fx.New(
+		fx.Provide(config.LoadConfiguration),
+		fx.Provide(db.CreateDataBase),
 		fx.Provide(server.NewHTTPServer),
 		fx.Invoke(func(*http.Server) {}),
+		fx.Invoke(runMigrations),
 	).Run()
 
+}
+
+func runMigrations(db *gorm.DB) {
+	sqlDB, err := db.DB()
+	if err != nil {
+		log.Fatalf("failed to get sql.DB from gorm.DB: %v", err)
+	}
+
+	goose.SetDialect("postgres")
+	if err := goose.Up(sqlDB, "db/migrations"); err != nil {
+		log.Fatalf("failed to run migrations: %v", err)
+	}
 }
