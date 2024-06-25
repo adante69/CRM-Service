@@ -4,7 +4,8 @@ services:
   app:
     build: .
     depends_on:
-        - db
+      - db
+
   db:
     container_name: postgres
     image: postgres:16-alpine
@@ -14,3 +15,10 @@ services:
       POSTGRES_DB: database
     ports:
       - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+volumes:
+  db_data:
+

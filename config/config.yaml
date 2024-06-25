@@ -1,7 +1,7 @@
 Env: "dev"
 Server:
   Host: "localhost"
-  Port: "8080"
+  Port: 8080
 Database:
   Dsn: "host=db user=gorm password=gorm dbname=database port=5432 sslmode=disable TimeZone=Europe/Moscow"
 
