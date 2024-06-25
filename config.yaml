@@ -1,7 +1,0 @@
-Env: "dev"
-Server:
-  Host: "localhost"
-  Port: "8080"
-Database:
-  Dsn: "postgres://gorm:gorm@localhost:5432/database?sslmode=disable&TimeZone=Europe/Moscow"
-

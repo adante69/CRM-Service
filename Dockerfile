@@ -1,4 +1,4 @@
-FROM golang:1.22.4-bullseye as base
+FROM golang:1.22.2-bullseye as base
 
 RUN adduser \
   --disabled-password \
@@ -11,7 +11,7 @@ RUN adduser \
 
 WORKDIR $GOPATH/src/smallest-golang/app/
 
-COPY . .
+COPY .. .
 
 RUN go mod download
 RUN cd cmd && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /main .
@@ -24,7 +24,7 @@ COPY --from=base /etc/passwd /etc/passwd
 COPY --from=base /etc/group /etc/group
 
 COPY --from=base /main .
-COPY . .
+COPY .. .
 
 USER small-user:small-user
 

@@ -18,8 +18,9 @@ type Configuration struct {
 
 func LoadConfiguration() (*Configuration, error) {
 	viper.SetConfigName("config") // name of config file (without extension)
-	viper.AddConfigPath(".")      // path to look for the config file in
-	viper.AutomaticEnv()          // read environment variables that match keys
+	viper.AddConfigPath("./config")
+	viper.AddConfigPath(".") // path to look for the config file in
+	viper.AutomaticEnv()     // read environment variables that match keys
 
 	// Optional: replace dots in environment variables with underscores
 
