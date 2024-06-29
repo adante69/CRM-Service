@@ -14,6 +14,9 @@ type Configuration struct {
 	Database struct {
 		Dsn string
 	}
+	JWT struct {
+		Secret string
+	}
 }
 
 func LoadConfiguration() (*Configuration, error) {

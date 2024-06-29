@@ -4,4 +4,6 @@ Server:
   Port: 8080
 Database:
   Dsn: "host=db user=gorm password=gorm dbname=database port=5432 sslmode=disable TimeZone=Europe/Moscow"
+JWT:
+  Secret: "kxjFUeJk145"
 

@@ -2,7 +2,7 @@
 
 
 -- Предоставление пользователю gorm прав на базу данных mydb
-GRANT ALL PRIVILEGES ON DATABASE mydb TO gorm;
+GRANT ALL PRIVILEGES ON DATABASE database TO gorm;
 
 -- Предоставление пользователю gorm права на использование схемы public
 GRANT USAGE ON SCHEMA public TO gorm;
