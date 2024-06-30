@@ -9,7 +9,7 @@ type ContactRepository struct {
 	db *gorm.DB
 }
 
-func NewAccountRepository(db *gorm.DB) *ContactRepository {
+func NewContactRepository(db *gorm.DB) *ContactRepository {
 	return &ContactRepository{db: db}
 }
 

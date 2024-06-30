@@ -9,7 +9,7 @@ type PartnerService struct {
 	partnerRep *repositories.PartnerRepository
 }
 
-func NewParterService(partnerRep *repositories.PartnerRepository) *PartnerService {
+func NewPartnerService(partnerRep *repositories.PartnerRepository) *PartnerService {
 	return &PartnerService{partnerRep: partnerRep}
 }
 
