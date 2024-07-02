@@ -53,7 +53,7 @@ func (h *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	conf := config.GetGlobalConfig()
+	conf, err := config.LoadConfiguration()
 
 	token, err := h.AuthService.Login(conf, creds.Email, creds.Password)
 	if err != nil {

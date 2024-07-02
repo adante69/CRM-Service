@@ -2,7 +2,11 @@ package main
 
 import (
 	"CRM-Service/config"
-	"CRM-Service/inits"
+	"CRM-Service/internal/handlers"
+	"CRM-Service/internal/repositories"
+	"CRM-Service/internal/server"
+	"CRM-Service/internal/services"
+	"CRM-Service/migrations/db"
 	"flag"
 	"fmt"
 	"github.com/pressly/goose/v3"
@@ -16,23 +20,35 @@ func main() {
 	migrate := flag.Bool("migrate", false, "Run database migrations")
 	flag.Parse()
 
-	err := config.LoadConfiguration() // загружаем конфигурацию
-	if err != nil {
-		log.Fatalf("failed to load configuration: %v", err)
-	}
-
 	if *migrate {
-		app := fx.New(
-			inits.Modules,
-			fx.Invoke(runMigrations),
-		)
+		app := fx.New(fx.Invoke(runMigrations))
 		app.Run()
 		return
 	}
 
 	app := fx.New(
-		inits.Modules,
-		fx.Invoke(startApplication),
+		fx.Provide(
+			config.LoadConfiguration,
+			db.CreateDataBase,
+			repositories.NewAccountRepository,
+			services.NewAuthService,
+			handlers.NewAuthHandler,
+			repositories.NewContactRepository,
+			services.NewContactService,
+			handlers.NewContactHandler,
+			repositories.NewPartnerRepository,
+			services.NewPartnerService,
+			handlers.NewPartnerHandler,
+			repositories.NewBidRepository,
+			services.NewBidService,
+			handlers.NewBidHandler,
+			server.NewMuxRouter,
+			server.NewHTTPServer),
+		fx.Invoke(handlers.RegisterAuthRoutes,
+			handlers.RegisterBidRoutes,
+			handlers.RegisterContactsRoutes,
+			handlers.RegisterPartnerRoutes,
+			startApplication),
 	)
 	app.Run()
 }

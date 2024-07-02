@@ -6,9 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func CreateDataBase() (*gorm.DB, error) {
-	conf := config.GetGlobalConfig()
-	dsn := conf.Database.Dsn
+func CreateDataBase(cf *config.Configuration) (*gorm.DB, error) {
+	dsn := cf.Database.Dsn
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
