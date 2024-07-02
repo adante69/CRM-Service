@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"CRM-Service/config"
 	"CRM-Service/internal/services"
 	"encoding/json"
 	"net/http"
@@ -46,7 +47,9 @@ func (h *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := h.AuthService.Login(creds.Email, creds.Password)
+	conf := config.GetGlobalConfig()
+
+	token, err := h.AuthService.Login(conf, creds.Email, creds.Password)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return

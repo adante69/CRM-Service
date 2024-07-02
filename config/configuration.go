@@ -21,7 +21,9 @@ type Configuration struct {
 	}
 }
 
-func LoadConfiguration() (*Configuration, error) {
+var globalConfiguration *Configuration
+
+func LoadConfiguration() error {
 	viper.SetConfigName("config") // name of config file (without extension)
 	viper.AddConfigPath("./config")
 	viper.AddConfigPath(".") // path to look for the config file in
@@ -30,13 +32,17 @@ func LoadConfiguration() (*Configuration, error) {
 	// Optional: replace dots in environment variables with underscores
 
 	if err := viper.ReadInConfig(); err != nil {
-		return nil, errors.Wrap(err, "failed to read configuration file")
+		return errors.Wrap(err, "failed to read configuration file")
 	}
 
 	var config Configuration
 	if err := viper.Unmarshal(&config); err != nil {
-		return nil, errors.Wrap(err, "failed to unmarshal configuration")
+		return errors.Wrap(err, "failed to unmarshal configuration")
 	}
 
-	return &config, nil
+	return nil
+}
+
+func GetGlobalConfig() *Configuration {
+	return globalConfiguration
 }

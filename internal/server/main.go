@@ -11,6 +11,11 @@ import (
 	"net/http"
 )
 
+func NewMuxRouter() *mux.Router {
+	router := mux.NewRouter()
+	return router
+}
+
 func NewHTTPServer(lc fx.Lifecycle, contactHandler *handlers.ContactHandler,
 	partnerHandler *handlers.PartnerHandler, bidHandler *handlers.BidHandler,
 	authHandler *handlers.AuthHandler) *http.Server {

@@ -1,11 +1,7 @@
 package main
 
 import (
-	"CRM-Service/internal/handlers"
-	"CRM-Service/internal/repositories"
-	"CRM-Service/internal/server"
-	"CRM-Service/internal/services"
-	"CRM-Service/migrations/db"
+	"CRM-Service/inits"
 	"flag"
 	"fmt"
 	"github.com/pressly/goose/v3"
@@ -21,7 +17,7 @@ func main() {
 
 	if *migrate {
 		app := fx.New(
-			fx.Provide(db.CreateDataBase),
+			inits.Modules,
 			fx.Invoke(runMigrations),
 		)
 		app.Run()
@@ -29,24 +25,10 @@ func main() {
 	}
 
 	app := fx.New(
-		fx.Provide(db.CreateDataBase,
-			repositories.NewAccountRepository,
-			services.NewAuthService,
-			handlers.NewAuthHandler,
-			repositories.NewContactRepository,
-			services.NewContactService,
-			handlers.NewContactHandler,
-			repositories.NewPartnerRepository,
-			services.NewPartnerService,
-			handlers.NewPartnerHandler,
-			repositories.NewBidRepository,
-			services.NewBidService,
-			handlers.NewBidHandler,
-			server.NewHTTPServer),
+		inits.Modules,
 		fx.Invoke(startApplication),
 	)
 	app.Run()
-
 }
 
 func runMigrations(db *gorm.DB) {

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"CRM-Service/config"
 	"CRM-Service/internal/auth"
 	"CRM-Service/internal/models"
 	"CRM-Service/internal/repositories"
@@ -33,7 +34,7 @@ func (s *AuthService) Register(email, password string) error {
 	return s.accountRepository.Create(account)
 }
 
-func (s *AuthService) Login(email, password string) (string, error) {
+func (s *AuthService) Login(cf *config.Configuration, email, password string) (string, error) {
 	user, err := s.accountRepository.FindByEmail(email)
 	if err != nil {
 		return "", err
@@ -42,7 +43,7 @@ func (s *AuthService) Login(email, password string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	token, err := auth.GenerateJWT(email)
+	token, err := auth.GenerateJWT(cf, email)
 	if err != nil {
 		return "", err
 	}

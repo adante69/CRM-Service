@@ -17,6 +17,14 @@ func NewPartnerHandler(partnerService *services.PartnerService) *PartnerHandler 
 	return &PartnerHandler{partnerService: partnerService}
 }
 
+func RegisterPartnerRoutes(api *mux.Router, h *PartnerHandler) {
+	api.HandleFunc("/partner", h.GetAllPartners).Methods("GET")
+	api.HandleFunc("/partner/{id}", h.GetPartner).Methods("GET")
+	api.HandleFunc("/partner", h.CreatePartner).Methods("POST")
+	api.HandleFunc("/partner/{id}", h.UpdatePartner).Methods("PUT")
+	api.HandleFunc("/partner/{id}", h.DeletePartner).Methods("DELETE")
+}
+
 func (handler *PartnerHandler) GetAllPartners(w http.ResponseWriter, r *http.Request) {
 	partners, err := handler.partnerService.GetAllPartners()
 	if err != nil {

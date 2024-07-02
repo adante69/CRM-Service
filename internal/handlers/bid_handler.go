@@ -17,6 +17,14 @@ func NewBidHandler(bidService *services.BidService) *BidHandler {
 	return &BidHandler{bidService: bidService}
 }
 
+func RegisterBidRoutes(api *mux.Router, h *BidHandler) {
+	api.HandleFunc("/bid", h.GetAllBids).Methods("GET")
+	api.HandleFunc("/partner/{id}", h.GetBid).Methods("GET")
+	api.HandleFunc("/bid", h.CreateBid).Methods("POST")
+	api.HandleFunc("/bid/{id}", h.UpdateBid).Methods("PUT")
+	api.HandleFunc("/bid/{id}", h.DeleteBid).Methods("DELETE")
+}
+
 func (h *BidHandler) GetAllBids(w http.ResponseWriter, r *http.Request) {
 	bids, err := h.bidService.GetAllBids()
 	if err != nil {

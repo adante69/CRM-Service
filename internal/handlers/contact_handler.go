@@ -17,6 +17,14 @@ func NewContactHandler(contactService *services.ContactService) *ContactHandler 
 	return &ContactHandler{ContactService: contactService}
 }
 
+func RegisterContactsRoutes(api *mux.Router, h *ContactHandler) {
+	api.HandleFunc("/contact", h.GetAllContacts).Methods("GET")
+	api.HandleFunc("/contact/{id}", h.GetContact).Methods("GET")
+	api.HandleFunc("/contact", h.CreateContact).Methods("POST")
+	api.HandleFunc("/contact/{id}", h.UpdateContact).Methods("PUT")
+	api.HandleFunc("/contact/{id}", h.DeleteContact).Methods("DELETE")
+}
+
 func (contactHandler *ContactHandler) GetAllContacts(w http.ResponseWriter, r *http.Request) {
 	contacts, err := contactHandler.ContactService.GetAllContacts()
 	if err != nil {
