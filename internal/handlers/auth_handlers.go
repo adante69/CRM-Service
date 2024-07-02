@@ -4,6 +4,7 @@ import (
 	"CRM-Service/config"
 	"CRM-Service/internal/services"
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"net/http"
 	"time"
 )
@@ -14,6 +15,11 @@ type AuthHandler struct {
 
 func NewAuthHandler(authService *services.AuthService) *AuthHandler {
 	return &AuthHandler{AuthService: authService}
+}
+
+func RegisterAuthRoutes(router *mux.Router, authHandler *AuthHandler) {
+	router.HandleFunc("/auth/signup", authHandler.SignUp).Methods("POST")
+	router.HandleFunc("/auth/signin", authHandler.SignIn).Methods("POST")
 }
 
 func (h *AuthHandler) SignUp(w http.ResponseWriter, r *http.Request) {

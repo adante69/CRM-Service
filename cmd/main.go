@@ -1,6 +1,7 @@
 package main
 
 import (
+	"CRM-Service/config"
 	"CRM-Service/inits"
 	"flag"
 	"fmt"
@@ -14,6 +15,11 @@ import (
 func main() {
 	migrate := flag.Bool("migrate", false, "Run database migrations")
 	flag.Parse()
+
+	err := config.LoadConfiguration() // загружаем конфигурацию
+	if err != nil {
+		log.Fatalf("failed to load configuration: %v", err)
+	}
 
 	if *migrate {
 		app := fx.New(

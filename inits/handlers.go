@@ -24,5 +24,12 @@ var Modules = fx.Options(
 		repositories.NewBidRepository,
 		services.NewBidService,
 		handlers.NewBidHandler,
+		server.NewMuxRouter,
 		server.NewHTTPServer),
+	fx.Invoke(
+		handlers.RegisterAuthRoutes,
+		handlers.RegisterBidRoutes,
+		handlers.RegisterContactsRoutes,
+		handlers.RegisterPartnerRoutes,
+	),
 )

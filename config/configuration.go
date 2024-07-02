@@ -29,8 +29,6 @@ func LoadConfiguration() error {
 	viper.AddConfigPath(".") // path to look for the config file in
 	viper.AutomaticEnv()     // read environment variables that match keys
 
-	// Optional: replace dots in environment variables with underscores
-
 	if err := viper.ReadInConfig(); err != nil {
 		return errors.Wrap(err, "failed to read configuration file")
 	}
@@ -39,6 +37,8 @@ func LoadConfiguration() error {
 	if err := viper.Unmarshal(&config); err != nil {
 		return errors.Wrap(err, "failed to unmarshal configuration")
 	}
+
+	globalConfiguration = &config
 
 	return nil
 }
