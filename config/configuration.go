@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
+	"time"
 )
 
 type Configuration struct {
@@ -15,7 +16,8 @@ type Configuration struct {
 		Dsn string
 	}
 	JWT struct {
-		Secret string
+		Secret         string
+		ExpirationTime time.Duration
 	}
 }
 

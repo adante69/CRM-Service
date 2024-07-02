@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"CRM-Service/config"
 	"github.com/dgrijalva/jwt-go"
 	"time"
 )
@@ -11,16 +10,9 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func GetKey() (key string) {
-	conf, err := config.LoadConfiguration()
-	if err != nil {
-		panic(err)
-	}
-	secretKey := conf.JWT.Secret
-	return secretKey
-}
 func GenerateJWT(email string) (string, error) {
-	secretKey := []byte(GetKey())
+	// need to do through config
+	//secretKey := []byte()
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
 		Email: email,

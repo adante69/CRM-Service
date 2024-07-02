@@ -18,6 +18,14 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+  migrations:
+      build: .
+      depends_on:
+        - db
+      environment:
+        DB_DSN: "host=db user=gorm password=gorm dbname=database sslmode=disable"
+      command: [ "./main", "-migrate" ]
+
 
 volumes:
   db_data:

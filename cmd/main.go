@@ -6,6 +6,7 @@ import (
 	"CRM-Service/internal/server"
 	"CRM-Service/internal/services"
 	"CRM-Service/migrations/db"
+	"flag"
 	"fmt"
 	"github.com/pressly/goose/v3"
 	"go.uber.org/fx"
@@ -15,28 +16,36 @@ import (
 )
 
 func main() {
-	fx.New(
-		fx.Provide(db.CreateDataBase),
-		fx.Provide(repositories.NewAccountRepository),
-		fx.Provide(services.NewAuthService),
-		fx.Provide(handlers.NewAuthHandler),
+	migrate := flag.Bool("migrate", false, "Run database migrations")
+	flag.Parse()
 
-		fx.Provide(repositories.NewContactRepository),
-		fx.Provide(services.NewContactService),
-		fx.Provide(handlers.NewContactHandler),
+	if *migrate {
+		app := fx.New(
+			fx.Provide(db.CreateDataBase),
+			fx.Invoke(runMigrations),
+		)
+		app.Run()
+		return
+	}
 
-		fx.Provide(repositories.NewPartnerRepository),
-		fx.Provide(services.NewPartnerService),
-		fx.Provide(handlers.NewPartnerHandler),
-
-		fx.Provide(repositories.NewBidRepository),
-		fx.Provide(services.NewBidService),
-		fx.Provide(handlers.NewBidHandler),
-
-		fx.Provide(server.NewHTTPServer),
-		fx.Invoke(runMigrations),
+	app := fx.New(
+		fx.Provide(db.CreateDataBase,
+			repositories.NewAccountRepository,
+			services.NewAuthService,
+			handlers.NewAuthHandler,
+			repositories.NewContactRepository,
+			services.NewContactService,
+			handlers.NewContactHandler,
+			repositories.NewPartnerRepository,
+			services.NewPartnerService,
+			handlers.NewPartnerHandler,
+			repositories.NewBidRepository,
+			services.NewBidService,
+			handlers.NewBidHandler,
+			server.NewHTTPServer),
 		fx.Invoke(startApplication),
-	).Run()
+	)
+	app.Run()
 
 }
 
@@ -54,5 +63,5 @@ func runMigrations(db *gorm.DB) {
 }
 
 func startApplication(httpServer *http.Server) {
-	fmt.Println("rabotaem")
+	fmt.Println("succesfully started application")
 }

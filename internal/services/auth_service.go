@@ -4,6 +4,7 @@ import (
 	"CRM-Service/internal/auth"
 	"CRM-Service/internal/models"
 	"CRM-Service/internal/repositories"
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -16,6 +17,11 @@ func NewAuthService(accountRepository *repositories.AccountRepository) *AuthServ
 }
 
 func (s *AuthService) Register(email, password string) error {
+	_, err := s.accountRepository.FindByEmail(email)
+	if err == nil {
+		return errors.New("user already exists")
+	}
+
 	hashedpassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
